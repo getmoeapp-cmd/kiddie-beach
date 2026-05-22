@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiddie Beach — Gerritsen Beach, Brooklyn NY</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --sand: #f5e6c8;
+  --sand-light: #faf3e6;
+  --ocean-deep: #1a5276;
+  --ocean-mid: #2980b9;
+  --ocean-light: #5dade2;
+  --sky: #aed6f1;
+  --sky-pale: #d6eaf8;
+  --sunset-orange: #e67e22;
+  --sunset-coral: #e74c3c;
+  --foam: #ecf0f1;
+  --driftwood: #6d4c41;
+  --seagrass: #27ae60;
+  --white: #ffffff;
+  --text-dark: #2c3e50;
+  --text-body: #34495e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-body);
+  background: var(--sand-light);
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════ WAVE DIVIDERS ═══════════════════════ */
+.wave-divider {
+  width: 100%;
+  line-height: 0;
+  overflow: hidden;
+}
+.wave-divider svg { display: block; width: 100%; height: 60px; }
+
+/* ═══════════════════════ NAVIGATION ═══════════════════════ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(26, 82, 118, 0.92);
+  backdrop-filter: blur(12px);
+  padding: 0 2rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.3s;
+}
+nav .logo {
+  font-family: 'Caveat', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--sand);
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+nav .logo span { color: var(--ocean-light); }
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+nav ul li a {
+  color: var(--sand-light);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+nav ul li a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--sunset-orange);
+  transition: width 0.3s;
+}
+nav ul li a:hover { color: var(--sunset-orange); }
+nav ul li a:hover::after { width: 100%; }
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 24px;
+  position: relative;
+}
+.mobile-toggle span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: var(--sand);
+  border-radius: 2px;
+  position: absolute;
+  left: 0;
+  transition: all 0.3s;
+}
+.mobile-toggle span:nth-child(1) { top: 0; }
+.mobile-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.mobile-toggle span:nth-child(3) { bottom: 0; }
+
+/* ═══════════════════════ HERO ═══════════════════════ */
+.hero {
+  min-height: 100vh;
+  background: linear-gradient(175deg, #1a5276 0%, #2980b9 35%, #5dade2 55%, #aed6f1 70%, #f5e6c8 85%, #f5e6c8 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 6rem 2rem 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated clouds */
+.hero::before, .hero::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  animation: float-cloud 20s ease-in-out infinite;
+}
+.hero::before {
+  width: 400px; height: 120px;
+  top: 15%; left: -5%;
+  animation-delay: 0s;
+}
+.hero::after {
+  width: 300px; height: 90px;
+  top: 22%; right: -8%;
+  animation-delay: -7s;
+  animation-duration: 25s;
+}
+
+@keyframes float-cloud {
+  0%, 100% { transform: translateX(0); opacity: 0.12; }
+  50% { transform: translateX(60px); opacity: 0.2; }
+}
+
+/* Sun */
+.sun {
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, #f9e547 0%, #f39c12 60%, rgba(243,156,18,0) 70%);
+  border-radius: 50%;
+  position: absolute;
+  top: 10%;
+  right: 15%;
+  animation: sun-pulse 4s ease-in-out infinite;
+}
+@keyframes sun-pulse {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.08); filter: brightness(1.1); }
+}
+.sun-rays {
+  position: absolute;
+  top: 10%; right: 15%;
+  width: 120px; height: 120px;
+  animation: sun-rotate 30s linear infinite;
+}
+.sun-rays::before {
+  content: '';
+  position: absolute;
+  inset: -40px;
+  background: repeating-conic-gradient(
+    rgba(243, 156, 18, 0.08) 0deg 10deg,
+    transparent 10deg 20deg
+  );
+  border-radius: 50%;
+}
+@keyframes sun-rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-tagline {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 0.5rem;
+  animation: fade-up 1s ease-out 0.3s both;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.15);
+  animation: fade-up 1s ease-out 0.5s both;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--sand);
+}
+.hero-subtitle {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.9);
+  max-width: 520px;
+  margin: 1rem auto 2rem;
+  line-height: 1.6;
+  animation: fade-up 1s ease-out 0.7s both;
+}
+.hero-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2.5rem;
+  animation: fade-up 1s ease-out 0.9s both;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  background: var(--sunset-orange);
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 50px;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(230,126,34,0.4);
+  animation: fade-up 1s ease-out 1.1s both;
+}
+.hero-cta:hover {
+  background: #d35400;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(230,126,34,0.5);
+}
+
+/* Animated wave bottom of hero */
+.hero-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+}
+.hero-waves svg {
+  position: absolute;
+  bottom: 0;
+  width: 200%;
+  height: 80px;
+}
+.wave-1 { animation: wave-move 8s linear infinite; opacity: 0.3; }
+.wave-2 { animation: wave-move 6s linear infinite reverse; opacity: 0.5; }
+.wave-3 { animation: wave-move 10s linear infinite; opacity: 0.2; }
+
+@keyframes wave-move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══════════════════════ ABOUT ═══════════════════════ */
+.about {
+  padding: 6rem 2rem;
+  background: var(--sand-light);
+  position: relative;
+}
+.about-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.about-visual {
+  position: relative;
+  height: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--ocean-mid), var(--ocean-light));
+  box-shadow: 0 20px 60px rgba(26,82,118,0.15);
+}
+.about-visual-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.beach-illustration {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+.about-visual-text {
+  font-family: 'Caveat', cursive;
+  color: var(--white);
+  font-size: 1.6rem;
+  text-align: center;
+  line-height: 1.4;
+}
+/* Sand texture at bottom of visual */
+.about-visual::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to top, var(--sand) 0%, transparent 100%);
+  border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+}
+
+.section-label {
+  font-family: 'Caveat', cursive;
+  color: var(--sunset-orange);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.about-text h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+}
+.about-text p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-body);
+  margin-bottom: 1rem;
+}
+.about-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(26,82,118,0.1);
+}
+.stat {
+  text-align: center;
+}
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-body);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 0.2rem;
+}
+
+/* ═══════════════════════ ACTIVITIES ═══════════════════════ */
+.activities {
+  padding: 6rem 2rem;
+  background: var(--ocean-deep);
+  position: relative;
+}
+.activities-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem;
+}
+.activities-header .section-label { color: var(--sand); }
+.activities-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+.activities-header p {
+  color: rgba(255,255,255,0.7);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.activities-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.activity-card {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+}
+.activity-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 4px;
+  transition: height 0.4s;
+}
+.activity-card:nth-child(1)::before { background: var(--ocean-light); }
+.activity-card:nth-child(2)::before { background: var(--sunset-orange); }
+.activity-card:nth-child(3)::before { background: var(--seagrass); }
+.activity-card:nth-child(4)::before { background: var(--sand); }
+.activity-card:nth-child(5)::before { background: var(--sunset-coral); }
+.activity-card:nth-child(6)::before { background: var(--sky); }
+
+.activity-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+.activity-card:hover::before { height: 6px; }
+
+.activity-icon {
+  font-size: 2.8rem;
+  margin-bottom: 1.2rem;
+  display: block;
+}
+.activity-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  color: var(--white);
+  margin-bottom: 0.8rem;
+  font-weight: 700;
+}
+.activity-card p {
+  color: rgba(255,255,255,0.65);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+/* ═══════════════════════ SUMMER SCHEDULE ═══════════════════════ */
+.schedule {
+  padding: 6rem 2rem;
+  background: var(--sand-light);
+  position: relative;
+}
+.schedule-inner {
+  max-width: 900px;
+  margin: 0 auto;
+}
+.schedule-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.schedule-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+  margin-bottom: 0.5rem;
+}
+.schedule-header p {
+  color: var(--text-body);
+  font-size: 1.05rem;
+}
+
+.schedule-timeline {
+  position: relative;
+  padding-left: 3rem;
+}
+.schedule-timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--ocean-light), var(--sunset-orange), var(--seagrass));
+  border-radius: 2px;
+}
+
+.schedule-item {
+  position: relative;
+  margin-bottom: 2.5rem;
+  padding: 1.8rem 2rem;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  transition: all 0.3s;
+}
+.schedule-item:hover {
+  transform: translateX(8px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+.schedule-item::before {
+  content: '';
+  position: absolute;
+  left: -2.35rem;
+  top: 2rem;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid var(--ocean-light);
+  background: var(--white);
+}
+.schedule-item:nth-child(even)::before { border-color: var(--sunset-orange); }
+
+.schedule-time {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--ocean-mid);
+  margin-bottom: 0.3rem;
+}
+.schedule-item h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: var(--ocean-deep);
+  margin-bottom: 0.4rem;
+}
+.schedule-item p {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════ COMMUNITY ═══════════════════════ */
+.community {
+  padding: 6rem 2rem;
+  background: linear-gradient(135deg, var(--sky-pale) 0%, var(--foam) 100%);
+}
+.community-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+.community-inner h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+  margin-bottom: 0.5rem;
+}
+.community-inner > p {
+  color: var(--text-body);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+}
+
+.testimonials {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.testimonial {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: left;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  transition: transform 0.3s;
+}
+.testimonial:hover { transform: translateY(-6px); }
+.testimonial::before {
+  content: '\201C';
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  color: var(--ocean-light);
+  opacity: 0.3;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  line-height: 1;
+}
+.testimonial p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-body);
+  font-style: italic;
+  margin-bottom: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+.testimonial-author {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ocean-deep);
+}
+.testimonial-detail {
+  font-size: 0.8rem;
+  color: var(--text-body);
+  opacity: 0.7;
+}
+
+/* ═══════════════════════ MEMBERSHIP ═══════════════════════ */
+.membership {
+  padding: 6rem 2rem;
+  background: var(--white);
+}
+.membership-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+.membership-inner .section-label { color: var(--sunset-orange); }
+.membership-inner h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+  margin-bottom: 0.8rem;
+}
+.membership-inner > p {
+  color: var(--text-body);
+  font-size: 1.05rem;
+  max-width: 580px;
+  margin: 0 auto 3rem;
+  line-height: 1.7;
+}
+
+.membership-card {
+  background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
+  border-radius: 24px;
+  padding: 3rem;
+  color: var(--white);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(26,82,118,0.25);
+}
+.membership-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+.membership-details h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  margin-bottom: 1.2rem;
+}
+.membership-list {
+  list-style: none;
+}
+.membership-list li {
+  padding: 0.6rem 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.membership-list li:last-child { border-bottom: none; }
+.membership-list .check {
+  width: 20px;
+  height: 20px;
+  background: var(--seagrass);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.membership-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.membership-cta .price-note {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  color: var(--sand);
+  margin-bottom: 1rem;
+}
+.membership-cta p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  opacity: 0.8;
+  margin-bottom: 2rem;
+}
+.btn-join {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2.5rem;
+  background: var(--sunset-orange);
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 50px;
+  transition: all 0.3s;
+  box-shadow: 0 8px 30px rgba(230,126,34,0.4);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.btn-join:hover {
+  background: #d35400;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(230,126,34,0.5);
+}
+
+/* ═══════════════════════ LOCATION / CONTACT ═══════════════════════ */
+.contact {
+  padding: 6rem 2rem;
+  background: var(--sand-light);
+}
+.contact-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+.contact-info h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--ocean-deep);
+  margin-bottom: 1rem;
+}
+.contact-info > p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.contact-icon {
+  width: 44px;
+  height: 44px;
+  background: var(--ocean-deep);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.contact-row h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ocean-deep);
+  margin-bottom: 0.1rem;
+}
+.contact-row p, .contact-row a {
+  font-size: 1rem;
+  color: var(--text-body);
+  text-decoration: none;
+}
+
+.map-embed {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  height: 400px;
+  background: var(--sky-pale);
+  position: relative;
+}
+.map-embed iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* ═══════════════════════ FOOTER ═══════════════════════ */
+footer {
+  background: var(--ocean-deep);
+  padding: 3rem 2rem 2rem;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+}
+.footer-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.footer-logo {
+  font-family: 'Caveat', cursive;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--sand);
+  margin-bottom: 0.5rem;
+}
+.footer-logo span { color: var(--ocean-light); }
+footer p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.footer-divider {
+  width: 60px;
+  height: 2px;
+  background: rgba(255,255,255,0.15);
+  margin: 1.5rem auto;
+}
+.footer-copy {
+  font-size: 0.8rem;
+  opacity: 0.5;
+}
+
+/* ═══════════════════════ FLOATING BEACH ELEMENTS ═══════════════════════ */
+.floater {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.08;
+  animation: float-gentle 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+/* ═══════════════════════ RESPONSIVE ═══════════════════════ */
+@media (max-width: 900px) {
+  .about-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .about-visual { height: 280px; }
+  .activities-grid { grid-template-columns: 1fr 1fr; }
+  .testimonials { grid-template-columns: 1fr; }
+  .membership-card { grid-template-columns: 1fr; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .map-embed { height: 300px; }
+}
+
+@media (max-width: 650px) {
+  nav ul { 
+    display: none;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(26,82,118,0.97);
+    flex-direction: column;
+    padding: 1.5rem 2rem;
+    gap: 1.2rem;
+  }
+  nav ul.open { display: flex; }
+  .mobile-toggle { display: block; }
+  .activities-grid { grid-template-columns: 1fr; }
+  .about-stats { flex-wrap: wrap; gap: 1.5rem; }
+  .hero h1 { font-size: 2.8rem; }
+  .sun { width: 80px; height: 80px; right: 10%; top: 12%; }
+  .sun-rays { width: 80px; height: 80px; right: 10%; top: 12%; }
+  .schedule-timeline { padding-left: 2.2rem; }
+}
+
+/* ═══════════════════════ SCROLL ANIMATIONS ═══════════════════════ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="logo">Kiddie <span>Beach</span></a>
+  <ul id="navMenu">
+    <li><a href="#about">About</a></li>
+    <li><a href="#activities">Activities</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#membership">Membership</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="sun"></div>
+  <div class="sun-rays"></div>
+  
+  <div class="hero-content">
+    <p class="hero-tagline">Est. Gerritsen Beach, Brooklyn</p>
+    <h1>Kiddie <em>Beach</em></h1>
+    <p class="hero-location">📍 Gerritsen Beach &bull; Brooklyn, NY 11229</p>
+    <p class="hero-subtitle">Where Gerritsen Beach kids spend their summer — swimming, playing, and making memories on our neighborhood's own private beach.</p>
+    <a href="#activities" class="hero-cta">Explore Summer Programs ↓</a>
+  </div>
+
+  <div class="hero-waves">
+    <svg class="wave-1" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,40 C360,80 720,0 1080,40 C1260,60 1440,40 1440,40 L1440,80 L0,80 Z" fill="rgba(245,230,200,0.5)"/>
+    </svg>
+    <svg class="wave-2" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,50 C320,10 640,70 960,30 C1200,10 1440,50 1440,50 L1440,80 L0,80 Z" fill="rgba(245,230,200,0.7)"/>
+    </svg>
+    <svg class="wave-3" viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path d="M0,60 C240,30 480,70 720,40 C960,10 1200,60 1440,30 L1440,80 L0,80 Z" fill="#f5e6c8"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-visual-inner">
+        <div class="beach-illustration">🏖️</div>
+        <div class="about-visual-text">
+          Brooklyn's Best-Kept<br>Summer Secret
+        </div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <p class="section-label">Our Story</p>
+      <h2>A Beach That Belongs to the Neighborhood</h2>
+      <p>Kiddie Beach is a beloved community beach tucked away at the tip of Gerritsen Beach — a tight-knit Brooklyn peninsula between Marine Park and Sheepshead Bay. For generations, local families have gathered here every summer to give their kids a safe, fun-filled place to swim, play, and grow up together.</p>
+      <p>Accessible from the ends of Hyman Court and Post Court, our private beach is maintained and supported by the community through annual memberships. More than just a beach — it's where neighborhood kids learn to swim, make lifelong friends, and create the kind of summer memories that stay with them forever.</p>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Years of<br>Community</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">May–Sep</div>
+          <div class="stat-label">Summer<br>Season</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Community<br>Run</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section class="activities" id="activities">
+  <div class="activities-header reveal">
+    <p class="section-label">Summer Fun</p>
+    <h2>What We Offer the Kids</h2>
+    <p>From sunrise to sunset, there's always something happening at Kiddie Beach. Our summer programs keep kids active, social, and off screens all season long.</p>
+  </div>
+  
+  <div class="activities-grid">
+    <div class="activity-card reveal">
+      <span class="activity-icon">🏊</span>
+      <h3>Swimming & Water Play</h3>
+      <p>Supervised swimming in our safe, monitored beach waters. From beginners wading in the shallows to confident swimmers — every kid belongs in the water here.</p>
+    </div>
+    <div class="activity-card reveal">
+      <span class="activity-icon">🏀</span>
+      <h3>Basketball & Sports</h3>
+      <p>Pickup basketball games, organized tournaments, and all-day sports keep kids competitive and active. Our courts stay packed all summer long.</p>
+    </div>
+    <div class="activity-card reveal">
+      <span class="activity-icon">🎣</span>
+      <h3>Fishing</h3>
+      <p>Gerritsen Beach is known for great fishing. Kids can cast a line right from the shore — learning patience, nature, and the thrill of the catch.</p>
+    </div>
+    <div class="activity-card reveal">
+      <span class="activity-icon">🎤</span>
+      <h3>Karaoke & Open Mic</h3>
+      <p>Summer nights come alive with karaoke, open mic events, and community entertainment. Kids and families get on stage and make some noise.</p>
+    </div>
+    <div class="activity-card reveal">
+      <span class="activity-icon">🎉</span>
+      <h3>Community Events</h3>
+      <p>Fundraisers, cookouts, holiday celebrations, and special events bring the whole neighborhood together. There's always something to look forward to.</p>
+    </div>
+    <div class="activity-card reveal">
+      <span class="activity-icon">⚾</span>
+      <h3>Ballfield Access</h3>
+      <p>The nearby Gerritsen ballfields offer three baseball diamonds, soccer and football fields, and a Little League field — right in the heart of the neighborhood.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule" id="schedule">
+  <div class="schedule-inner">
+    <div class="schedule-header reveal">
+      <p class="section-label">A Day at Kiddie Beach</p>
+      <h2>Typical Summer Day</h2>
+      <p>Here's what a full day at the beach looks like for our kids</p>
+    </div>
+    
+    <div class="schedule-timeline">
+      <div class="schedule-item reveal">
+        <div class="schedule-time">Morning</div>
+        <h3>Open Swim & Free Play</h3>
+        <p>Kids arrive, set up on the sand, and hit the water. Supervised swimming, sandcastle building, and morning games get the day started right.</p>
+      </div>
+      <div class="schedule-item reveal">
+        <div class="schedule-time">Late Morning</div>
+        <h3>Organized Sports & Activities</h3>
+        <p>Basketball games, fishing sessions, and group sports get the energy up. Something for every age and interest level.</p>
+      </div>
+      <div class="schedule-item reveal">
+        <div class="schedule-time">Afternoon</div>
+        <h3>Snack Bar & Hangout</h3>
+        <p>Refuel at the snack stand, hang with friends, or just soak up the sun. The beach is the neighborhood living room in the summer.</p>
+      </div>
+      <div class="schedule-item reveal">
+        <div class="schedule-time">Evening</div>
+        <h3>Community Events & Entertainment</h3>
+        <p>As the sun goes down, the fun shifts to karaoke nights, open mic sessions, fundraisers, and family cookouts under the Brooklyn sky.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section class="community" id="community">
+  <div class="community-inner">
+    <p class="section-label reveal">What Families Say</p>
+    <h2 class="reveal">The Heart of Gerritsen Beach</h2>
+    <p class="reveal">Kiddie Beach isn't just a place — it's a tradition passed down through families for generations.</p>
+    
+    <div class="testimonials">
+      <div class="testimonial reveal">
+        <p>My kids spend every single day here from June through August. They come home tired, happy, and already asking when they can go back. There's nothing else like it in Brooklyn.</p>
+        <div class="testimonial-author">— Gerritsen Beach Parent</div>
+        <div class="testimonial-detail">Member for 12 years</div>
+      </div>
+      <div class="testimonial reveal">
+        <p>I grew up at Kiddie Beach. Now my own kids are making the same memories I did — swimming, fishing, playing ball with the neighborhood kids. It's the best thing about living here.</p>
+        <div class="testimonial-author">— Third-Generation Local</div>
+        <div class="testimonial-detail">Lifelong resident</div>
+      </div>
+      <div class="testimonial reveal">
+        <p>In a city full of screens and schedules, Kiddie Beach gives our kids real summer. Fresh air, real friends, and the freedom to just be kids. We wouldn't trade it for anything.</p>
+        <div class="testimonial-author">— GB Family</div>
+        <div class="testimonial-detail">Member since 2018</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEMBERSHIP -->
+<section class="membership" id="membership">
+  <div class="membership-inner">
+    <p class="section-label reveal">Join Us</p>
+    <h2 class="reveal">How to Become a Member</h2>
+    <p class="reveal">Getting your Kiddie Beach membership is a two-step process. You must first be a member of the Gerritsen Beach Property Owners Association (GBPOA) before you can sign up for beach access.</p>
+
+    <!-- STEP INDICATORS -->
+    <div class="membership-steps reveal" style="display:flex; gap:2rem; justify-content:center; margin-bottom:3rem;">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <span style="width:40px;height:40px;background:var(--sunset-orange);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;">1</span>
+        <span style="font-weight:700;color:var(--ocean-deep);font-size:1rem;">GBPOA Membership</span>
+      </div>
+      <div style="font-size:1.5rem;color:var(--ocean-light);display:flex;align-items:center;">→</div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <span style="width:40px;height:40px;background:var(--ocean-mid);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:900;font-size:1.1rem;">2</span>
+        <span style="font-weight:700;color:var(--ocean-deep);font-size:1rem;">Kiddie Beach Sign-Up</span>
+      </div>
+    </div>
+
+    <!-- STEP 1 — GBPOA -->
+    <div class="membership-card reveal" style="margin-bottom:2rem;">
+      <div class="membership-details">
+        <h3 style="display:flex;align-items:center;gap:0.75rem;">
+          <span style="width:32px;height:32px;background:var(--sunset-orange);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.9rem;font-family:'Playfair Display',serif;font-weight:900;flex-shrink:0;">1</span>
+          GBPOA Membership
+        </h3>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;margin-bottom:1.2rem;line-height:1.6;">First, join the Gerritsen Beach Property Owners Association. Your GBPOA membership runs May 2026 – April 2027 and is required before signing up for Kiddie Beach.</p>
+        <ul class="membership-list">
+          <li><span class="check">✓</span> Homeowner (includes one additional title holder) — $25.00</li>
+          <li><span class="check">✓</span> Tenant — $15.00 per adult</li>
+          <li><span class="check">✓</span> Senior Citizen — $10.00 each (Couple: $20.00)</li>
+          <li><span class="check">✓</span> Additional contributions always welcome</li>
+        </ul>
+      </div>
+      <div class="membership-cta">
+        <p class="price-note">Pay by Check or Venmo</p>
+        <p>Make checks payable to <strong style="color:var(--white);">GBPOA</strong>. You can also pay via Venmo at <strong style="color:var(--sand);">@kb-gbpoa</strong></p>
+        <button class="btn-join" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Get the GBPOA Form →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2 — KIDDIE BEACH -->
+    <div class="membership-card reveal" style="background:linear-gradient(135deg, #1a6e3a 0%, #27ae60 100%); box-shadow: 0 20px 60px rgba(39,174,96,0.25);">
+      <div class="membership-details">
+        <h3 style="display:flex;align-items:center;gap:0.75rem;">
+          <span style="width:32px;height:32px;background:var(--ocean-mid);color:#fff;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.9rem;font-family:'Playfair Display',serif;font-weight:900;flex-shrink:0;">2</span>
+          Kiddie Beach Membership
+        </h3>
+        <p style="color:rgba(255,255,255,0.7);font-size:0.95rem;margin-bottom:1.2rem;line-height:1.6;">Once your GBPOA membership is confirmed, sign up for Kiddie Beach. Opening Day is <strong style="color:#fff;">Saturday, June 20th, 2026</strong>. Choose your plan:</p>
+        <ul class="membership-list">
+          <li><span class="check">✓</span> <strong style="color:#fff;">Family Plan</strong> — $450 &nbsp;(Parent & children under 21 in household)</li>
+          <li><span class="check">✓</span> <strong style="color:#fff;">Single Parent Plan</strong> — $350 &nbsp;(One parent & children in household)</li>
+          <li><span class="check">✓</span> <strong style="color:#fff;">Individual Plan</strong> — $200 &nbsp;(Membership for applicant only)</li>
+          <li><span class="check">✓</span> <strong style="color:#fff;">Senior Plan</strong> — $100 each &nbsp;(Ages 62–75)</li>
+          <li><span class="check">✓</span> <strong style="color:#fff;">Super Senior Plan</strong> — $60 each &nbsp;(Ages 76+)</li>
+        </ul>
+      </div>
+      <div class="membership-cta">
+        <p class="price-note">How to Register</p>
+        <p style="font-size:0.9rem; line-height:1.7;">Checks payable to <strong style="color:#fff;">GBPOA</strong> or Venmo <strong style="color:var(--sand);">@KB-GBPOA</strong></p>
+        <p style="font-size:0.88rem; line-height:1.7; margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid rgba(255,255,255,0.15);">
+          <strong style="color:#fff;">Mail to:</strong> GBPOA / Kiddie Beach<br>c/o 64 Ebony Court, Bklyn NY 11229
+        </p>
+        <p style="font-size:0.88rem; line-height:1.7; margin-top:0.8rem;">
+          <strong style="color:#fff;">Drop off at:</strong> Greenwood Real Estate Office
+        </p>
+        <p style="font-size:0.88rem; line-height:1.7; margin-top:0.8rem; padding-top:0.8rem; border-top:1px solid rgba(255,255,255,0.15);">
+          <strong style="color:#fff;">Registration Nights at the Cort Club:</strong><br>May 21st &bull; May 28th &bull; June 4th
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT / LOCATION -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <p class="section-label">Find Us</p>
+      <h2>Come Down to the Beach</h2>
+      <p>Kiddie Beach is located at the southern tip of Gerritsen Beach, Brooklyn. Beach access points are at the ends of Hyman Court and Post Court — right where the neighborhood meets the water.</p>
+      
+      <div class="contact-details">
+        <div class="contact-row">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4>Location</h4>
+            <p>Gerritsen Beach, Brooklyn, NY 11229<br>Access via Hyman Court & Post Court</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📅</div>
+          <div>
+            <h4>Season</h4>
+            <p>May through September<br>Open daily during summer months</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">👥</div>
+          <div>
+            <h4>Community</h4>
+            <p>Gerritsen Beach residents &amp; members<br>Annual membership required</p>
+          </div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">📧</div>
+          <div>
+            <h4>Get In Touch</h4>
+            <p>For membership info and questions,<br>reach out to the Kiddie Beach committee</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="map-embed reveal">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3030.5!2d-73.922!3d40.585!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c244b0e7d2f8c7%3A0x1234567890abcdef!2sGerritsen+Beach%2C+Brooklyn%2C+NY+11229!5e0!3m2!1sen!2sus!4v1234567890" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Kiddie Beach Location">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Kiddie <span>Beach</span></div>
+    <p>Gerritsen Beach, Brooklyn, NY 11229</p>
+    <p>A community-run private beach — keeping neighborhood kids active, happy, and together every summer since day one.</p>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">&copy; 2026 Kiddie Beach &bull; Gerritsen Beach Community &bull; Brooklyn, NY</p>
+  </div>
+</footer>
+
+<script>
+// Mobile menu toggle
+document.getElementById('mobileToggle').addEventListener('click', function() {
+  document.getElementById('navMenu').classList.toggle('open');
+});
+
+// Close menu on link click
+document.querySelectorAll('#navMenu a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navMenu').classList.remove('open');
+  });
+});
+
+// Scroll reveal animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, index) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, index * 100);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav background on scroll
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  if (window.scrollY > 100) {
+    nav.style.background = 'rgba(26, 82, 118, 0.97)';
+    nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.15)';
+  } else {
+    nav.style.background = 'rgba(26, 82, 118, 0.92)';
+    nav.style.boxShadow = 'none';
+  }
+});
+</script>
+
+</body>
+</html>
