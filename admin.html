@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kiddie Beach — Beach Director</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #0c1929; --card: #162538; --border: rgba(255,255,255,0.06);
+  --text: #fff; --muted: #888; --sand: #f5e6c8;
+  --orange: #e67e22; --green: #27ae60; --red: #e74c3c; --blue: #2980b9;
+}
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+a { color:var(--orange); text-decoration:none; }
+
+/* ── Login ── */
+.login-wrap {
+  min-height:100vh; display:flex; align-items:center; justify-content:center; padding:2rem;
+}
+.login-box {
+  max-width:400px; width:100%; background:var(--card); border-radius:16px;
+  padding:2.5rem; border:1px solid var(--border); text-align:center;
+}
+.login-box h2 { font-family:'Playfair Display',serif; font-size:1.4rem; margin:8px 0 4px; }
+.login-box .sub { color:var(--muted); font-size:0.85rem; margin-bottom:20px; }
+.login-input {
+  width:100%; padding:12px 14px; border-radius:10px; border:2px solid var(--border);
+  background:var(--bg); color:#fff; font-size:0.95rem; font-family:inherit; outline:none;
+  margin-bottom:12px; transition:border 0.2s;
+}
+.login-input:focus { border-color:var(--orange); }
+.login-err { color:var(--red); font-size:0.85rem; margin-bottom:12px; display:none; }
+
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:12px 28px; color:#fff; font-weight:700; font-size:0.95rem;
+  border-radius:50px; border:none; cursor:pointer; font-family:inherit;
+  transition:all 0.2s; width:100%;
+}
+.btn-orange { background:var(--orange); }
+.btn-orange:hover { background:#d35400; }
+.btn-green { background:var(--green); }
+.btn-red { background:var(--red); }
+.btn-blue { background:var(--blue); }
+.btn-ghost { background:none; border:1px solid var(--border); color:var(--muted); font-size:0.85rem; padding:6px 14px; border-radius:6px; width:auto; }
+
+/* ── Admin Layout ── */
+.admin-nav {
+  background:var(--card); padding:0.8rem 1.5rem; display:flex; align-items:center;
+  justify-content:space-between; border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
+}
+.admin-nav .brand { font-family:'Playfair Display',serif; font-weight:700; color:var(--sand); }
+.tab-btns { display:flex; gap:8px; }
+.tab-btn {
+  background:transparent; border:1px solid transparent; color:var(--muted);
+  border-radius:6px; padding:6px 14px; cursor:pointer; font-size:0.8rem;
+  font-weight:600; font-family:inherit; transition:all 0.2s;
+}
+.tab-btn.active { background:rgba(230,126,34,0.15); border-color:rgba(230,126,34,0.3); color:var(--orange); }
+
+.admin-content { padding:2rem 1.5rem; max-width:1100px; margin:0 auto; }
+.panel { display:none; }
+.panel.active { display:block; }
+
+/* ── Cards ── */
+.card {
+  background:var(--card); border-radius:12px; padding:1.5rem;
+  border:1px solid var(--border); margin-bottom:16px;
+}
+.card-title {
+  font-size:0.75rem; color:var(--muted); letter-spacing:0.5px;
+  text-transform:uppercase; margin-bottom:16px; font-weight:600;
+}
+
+/* ── Stat row ── */
+.stat-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px; margin-bottom:24px; }
+.stat-card { background:var(--card); border-radius:12px; padding:1.2rem; border:1px solid var(--border); }
+.stat-label { font-size:0.75rem; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:8px; }
+.stat-value { font-size:1.6rem; font-weight:800; font-family:'Playfair Display',serif; }
+
+/* ── Filters ── */
+.filters { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:20px; }
+.filter-input {
+  padding:10px 14px; border-radius:10px; border:1px solid var(--border);
+  background:var(--card); color:#fff; font-size:0.9rem; font-family:inherit;
+  outline:none; flex:1 1 200px; min-width:160px;
+}
+.filter-input:focus { border-color:var(--orange); }
+.filter-select { flex:0 0 170px; }
+
+/* ── Table ── */
+.table-wrap { background:var(--card); border-radius:12px; overflow:hidden; border:1px solid var(--border); }
+.table-header {
+  display:grid; grid-template-columns:2fr 2fr 1.2fr 1fr 1fr 0.8fr;
+  padding:10px 16px; background:rgba(255,255,255,0.03);
+  font-size:0.7rem; color:var(--muted); letter-spacing:0.5px;
+  text-transform:uppercase; font-weight:600; gap:8px;
+}
+.table-row {
+  display:grid; grid-template-columns:2fr 2fr 1.2fr 1fr 1fr 0.8fr;
+  padding:12px 16px; border-top:1px solid rgba(255,255,255,0.04);
+  cursor:pointer; transition:background 0.15s; gap:8px; align-items:center;
+}
+.table-row:hover { background:rgba(255,255,255,0.03); }
+
+.paid-badge {
+  display:inline-flex; align-items:center; gap:4px; padding:3px 10px;
+  border-radius:6px; font-size:0.78rem; font-weight:600; cursor:pointer;
+  border:none; font-family:inherit; transition:all 0.2s;
+}
+.paid-yes { background:rgba(39,174,96,0.15); border:1px solid rgba(39,174,96,0.3); color:var(--green); }
+.paid-no { background:rgba(231,76,60,0.1); border:1px solid rgba(231,76,60,0.2); color:var(--red); }
+
+.status-pill {
+  font-size:0.75rem; font-weight:600; padding:3px 10px; border-radius:20px; display:inline-block;
+}
+
+/* ── Detail ── */
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.detail-field .d-label { font-size:0.7rem; color:var(--muted); letter-spacing:0.3px; text-transform:uppercase; margin-bottom:2px; }
+.detail-field .d-value { font-size:0.95rem; color:#fff; }
+
+/* ── Progress bars ── */
+.progress-bar { height:6px; background:rgba(255,255,255,0.06); border-radius:3px; margin-top:4px; }
+.progress-fill { height:100%; border-radius:3px; transition:width 0.5s; background:linear-gradient(90deg,var(--orange),#f39c12); }
+
+@media (max-width:700px) {
+  .table-header, .table-row { grid-template-columns:1fr 1fr; font-size:0.8rem; }
+  .detail-grid { grid-template-columns:1fr; }
+  .stat-row { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-box">
+    <div style="font-size:2rem;margin-bottom:8px;">🔒</div>
+    <h2>Beach Director Login</h2>
+    <p class="sub">Kiddie Beach Back Office</p>
+    <input type="password" class="login-input" id="pwInput" placeholder="Enter password" autocomplete="off">
+    <p class="login-err" id="loginErr">Incorrect password. Try again.</p>
+    <button class="btn btn-orange" id="loginBtn">Log In →</button>
+    <div style="margin-top:16px;"><a href="index.html" style="font-size:0.85rem;color:var(--muted);">← Back to Website</a></div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none;">
+  <div class="admin-nav">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:1.2rem;">🏖️</span>
+      <span class="brand">Kiddie Beach — Back Office</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="tab-btn" data-tab="members">Members</button>
+      <button class="btn-ghost" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <div class="admin-content">
+    <!-- DASHBOARD -->
+    <div class="panel active" id="panelDashboard">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--sand);margin-bottom:24px;">Dashboard</h2>
+      <div class="stat-row" id="statRow"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="card"><div class="card-title">Plan Breakdown</div><div id="planBreakdown"></div></div>
+        <div class="card"><div class="card-title">Recent Registrations</div><div id="recentList"></div></div>
+      </div>
+    </div>
+
+    <!-- MEMBERS LIST -->
+    <div class="panel" id="panelMembers">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--sand);margin-bottom:20px;">All Members</h2>
+      <div class="filters">
+        <input class="filter-input" id="searchInput" placeholder="🔍 Search by name, address, email, phone...">
+        <select class="filter-input filter-select" id="filterPlan">
+          <option value="all">All Plans</option>
+          <option value="family">Family</option>
+          <option value="single_parent">Single Parent</option>
+          <option value="individual">Individual</option>
+          <option value="senior">Senior</option>
+          <option value="super_senior">Super Senior</option>
+        </select>
+        <select class="filter-input filter-select" id="filterPay">
+          <option value="all">All Payment</option>
+          <option value="paid">Fully Paid</option>
+          <option value="unpaid">Unpaid / Partial</option>
+        </select>
+      </div>
+      <div id="memberTable"></div>
+    </div>
+
+    <!-- MEMBER DETAIL -->
+    <div class="panel" id="panelDetail">
+      <button class="btn-ghost" id="backToList" style="margin-bottom:16px;">← Back to Members</button>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://fpcdhjntcayidsvkkdep.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZwY2Roam50Y2F5aWRzdmtrZGVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkxODY3OTIsImV4cCI6MjA5NDc2Mjc5Mn0.dRuREqk0weiC1viPed-PEDLJNBIlsa3fKgm9hdOAT9k';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const ADMIN_PW = 'KiddieBeach2026';
+const KB_LABELS = { family:'Family',single_parent:'Single Parent',individual:'Individual',senior:'Senior',super_senior:'Super Senior' };
+const GBPOA_LABELS = { homeowner:'Homeowner ($25)',tenant:'Tenant ($15/ea)',senior_single:'Senior ($10)',senior_couple:'Senior Couple ($20)' };
+const fmt = n => '$' + Number(n||0).toFixed(2);
+
+let members = [];
+let children = [];
+
+// ═══ LOGIN ═══
+document.getElementById('loginBtn').addEventListener('click', tryLogin);
+document.getElementById('pwInput').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
+
+function tryLogin() {
+  if (document.getElementById('pwInput').value === ADMIN_PW) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('loginErr').style.display = 'block';
+    setTimeout(() => document.getElementById('loginErr').style.display = 'none', 2000);
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('loginScreen').style.display = '';
+  document.getElementById('pwInput').value = '';
+});
+
+// ═══ TAB SWITCHING ═══
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1)).classList.add('active');
+  });
+});
+
+document.getElementById('backToList').addEventListener('click', () => {
+  document.getElementById('panelDetail').classList.remove('active');
+  document.getElementById('panelMembers').classList.add('active');
+});
+
+// ═══ LOAD DATA ═══
+async function loadData() {
+  const { data: m } = await sb.from('beach_members').select('*').order('registered_at', { ascending: false });
+  const { data: c } = await sb.from('beach_children').select('*');
+  members = m || [];
+  children = c || [];
+  renderDashboard();
+  renderMembers();
+}
+
+// ═══ DASHBOARD ═══
+function renderDashboard() {
+  const total = members.length;
+  const revenue = members.reduce((s,m) => s + Number(m.gbpoa_fee||0) + Number(m.kb_fee||0) + Number(m.gbpoa_contribution||0), 0);
+  const paidBoth = members.filter(m => m.gbpoa_paid && m.kb_paid).length;
+  const unpaid = members.filter(m => !m.gbpoa_paid || !m.kb_paid).length;
+
+  document.getElementById('statRow').innerHTML =
+    statCard('Total Registrations', total, 'var(--blue)', '👥') +
+    statCard('Revenue Due', fmt(revenue), 'var(--green)', '💰') +
+    statCard('Fully Paid', paidBoth, 'var(--green)', '✅') +
+    statCard('Unpaid / Partial', unpaid, 'var(--red)', '⏳');
+
+  // Plan breakdown
+  const plans = {};
+  members.forEach(m => { plans[m.kb_plan] = (plans[m.kb_plan]||0) + 1; });
+  let planHtml = '';
+  Object.keys(KB_LABELS).forEach(k => {
+    const count = plans[k] || 0;
+    const pct = total ? (count/total*100) : 0;
+    planHtml += '<div style="margin-bottom:12px;"><div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:4px;"><span style="color:var(--muted);">'+KB_LABELS[k]+'</span><span style="font-weight:600;">'+count+'</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%;"></div></div></div>';
+  });
+  document.getElementById('planBreakdown').innerHTML = planHtml;
+
+  // Recent
+  const recent = members.slice(0, 5);
+  if (!recent.length) { document.getElementById('recentList').innerHTML = '<p style="color:var(--muted);font-size:0.9rem;">No registrations yet.</p>'; return; }
+  document.getElementById('recentList').innerHTML = recent.map(m => {
+    const status = m.gbpoa_paid && m.kb_paid ? 'Paid' : (!m.gbpoa_paid && !m.kb_paid) ? 'Unpaid' : 'Partial';
+    const color = status === 'Paid' ? 'var(--green)' : status === 'Unpaid' ? 'var(--red)' : '#f39c12';
+    return '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><div><div style="font-size:0.9rem;font-weight:600;">'+m.first_name+' '+m.last_name+'</div><div style="font-size:0.75rem;color:var(--muted);">'+new Date(m.registered_at).toLocaleDateString()+'</div></div><span class="status-pill" style="color:'+color+';background:'+color+'22;">'+status+'</span></div>';
+  }).join('');
+}
+
+function statCard(label, value, color, icon) {
+  return '<div class="stat-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;"><div><div class="stat-label">'+label+'</div><div class="stat-value" style="color:'+color+';">'+value+'</div></div><span style="font-size:1.5rem;">'+icon+'</span></div></div>';
+}
+
+// ═══ MEMBERS LIST ═══
+function renderMembers() {
+  const q = (document.getElementById('searchInput').value || '').toLowerCase();
+  const plan = document.getElementById('filterPlan').value;
+  const pay = document.getElementById('filterPay').value;
+
+  const filtered = members.filter(m => {
+    const matchQ = !q || (m.first_name+' '+m.last_name+' '+m.address+' '+m.email+' '+m.phone).toLowerCase().includes(q);
+    const matchPlan = plan === 'all' || m.kb_plan === plan;
+    const matchPay = pay === 'all' || (pay === 'paid' && m.gbpoa_paid && m.kb_paid) || (pay === 'unpaid' && (!m.gbpoa_paid || !m.kb_paid));
+    return matchQ && matchPlan && matchPay;
+  });
+
+  if (!filtered.length) {
+    document.getElementById('memberTable').innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);">'+(members.length ? 'No members match your filters.' : 'No registrations yet.')+'</div>';
+    return;
+  }
+
+  let html = '<div class="table-wrap"><div class="table-header"><span>Name</span><span>Contact</span><span>Plan</span><span>GBPOA</span><span>Beach</span><span>Total</span></div>';
+  filtered.forEach(m => {
+    html += '<div class="table-row" onclick="showDetail('+m.id+')">' +
+      '<div><div style="font-size:0.9rem;font-weight:600;">'+m.first_name+' '+m.last_name+'</div><div style="font-size:0.75rem;color:var(--muted);margin-top:2px;">'+m.address+'</div></div>' +
+      '<div style="font-size:0.8rem;color:#aaa;"><div>'+m.email+'</div><div>'+m.phone+'</div></div>' +
+      '<div style="font-size:0.8rem;">'+KB_LABELS[m.kb_plan]+'</div>' +
+      '<div><button class="paid-badge '+(m.gbpoa_paid?'paid-yes':'paid-no')+'" onclick="event.stopPropagation();togglePaid('+m.id+',\'gbpoa_paid\','+m.gbpoa_paid+')">'+(m.gbpoa_paid?'✓ Paid':'Unpaid')+' <span style="color:var(--muted);font-weight:400;">'+fmt(m.gbpoa_fee)+'</span></button></div>' +
+      '<div><button class="paid-badge '+(m.kb_paid?'paid-yes':'paid-no')+'" onclick="event.stopPropagation();togglePaid('+m.id+',\'kb_paid\','+m.kb_paid+')">'+(m.kb_paid?'✓ Paid':'Unpaid')+' <span style="color:var(--muted);font-weight:400;">'+fmt(m.kb_fee)+'</span></button></div>' +
+      '<div style="font-size:0.9rem;font-weight:700;color:var(--sand);">'+fmt(Number(m.gbpoa_fee||0)+Number(m.kb_fee||0))+'</div>' +
+    '</div>';
+  });
+  html += '</div>';
+  document.getElementById('memberTable').innerHTML = html;
+}
+
+document.getElementById('searchInput').addEventListener('input', renderMembers);
+document.getElementById('filterPlan').addEventListener('change', renderMembers);
+document.getElementById('filterPay').addEventListener('change', renderMembers);
+
+// ═══ TOGGLE PAID ═══
+async function togglePaid(id, field, current) {
+  const now = new Date().toISOString();
+  const update = {};
+  update[field] = !current;
+  update[field.replace('_paid','_paid_at')] = !current ? now : null;
+  update.updated_at = now;
+  await sb.from('beach_members').update(update).eq('id', id);
+  await loadData();
+}
+
+// ═══ MEMBER DETAIL ═══
+function showDetail(id) {
+  const m = members.find(x => x.id === id);
+  if (!m) return;
+  const kids = children.filter(c => c.member_id === id);
+  const total = Number(m.gbpoa_fee||0) + Number(m.kb_fee||0) + Number(m.gbpoa_contribution||0);
+
+  let html = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;"><div><h2 style="font-family:\'Playfair Display\',serif;font-size:1.5rem;margin:0;">'+m.first_name+' '+m.last_name+'</h2><p style="color:var(--muted);font-size:0.85rem;margin:4px 0 0;">Registered '+new Date(m.registered_at).toLocaleDateString()+' at '+new Date(m.registered_at).toLocaleTimeString()+'</p></div>'+ statusPill(m) +'</div>';
+  html += '<div class="detail-grid">' +
+    dField('Address',m.address) + dField('Email',m.email) +
+    dField('Phone',m.phone) + dField('Alt Phone',m.alt_phone||'—') +
+    dField('Emergency Contact',m.emergency_contact) + dField('Emergency Phone',m.emergency_phone) +
+  '</div></div>';
+
+  // Payment cards
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">';
+  html += '<div class="card"><div class="card-title">GBPOA Membership</div>'+dField('Type',GBPOA_LABELS[m.gbpoa_type]||m.gbpoa_type)+dField('Fee',fmt(m.gbpoa_fee))+(m.gbpoa_contribution>0?dField('Extra Contribution',fmt(m.gbpoa_contribution)):'')+
+    '<button class="btn '+(m.gbpoa_paid?'btn-green':'btn-red')+'" style="margin-top:12px;font-size:0.85rem;padding:10px 16px;" onclick="togglePaid('+m.id+',\'gbpoa_paid\','+m.gbpoa_paid+');setTimeout(()=>showDetail('+m.id+'),500);">'+(m.gbpoa_paid?'✓ Marked Paid — Click to Undo':'Mark GBPOA as Paid')+'</button></div>';
+  html += '<div class="card"><div class="card-title">Kiddie Beach Membership</div>'+dField('Plan',KB_LABELS[m.kb_plan])+dField('Fee',fmt(m.kb_fee))+
+    '<button class="btn '+(m.kb_paid?'btn-green':'btn-red')+'" style="margin-top:12px;font-size:0.85rem;padding:10px 16px;" onclick="togglePaid('+m.id+',\'kb_paid\','+m.kb_paid+');setTimeout(()=>showDetail('+m.id+'),500);">'+(m.kb_paid?'✓ Marked Paid — Click to Undo':'Mark Beach as Paid')+'</button></div>';
+  html += '</div>';
+
+  // Children
+  if (kids.length) {
+    html += '<div class="card"><div class="card-title">Children</div>';
+    kids.forEach(c => {
+      html += '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);"><span style="font-weight:600;">'+c.name+'</span><span style="color:var(--muted);font-size:0.85rem;">'+(c.birthdate||'No DOB')+'</span></div>';
+    });
+    html += '</div>';
+  }
+
+  // Total
+  html += '<div class="card" style="background:linear-gradient(135deg,#1a5276,#2980b9);"><div style="display:flex;justify-content:space-between;align-items:center;"><div><div style="font-size:0.8rem;opacity:0.7;">TOTAL DUE</div><div style="font-size:0.85rem;margin-top:4px;opacity:0.8;">GBPOA '+fmt(m.gbpoa_fee)+' + Beach '+fmt(m.kb_fee)+(m.gbpoa_contribution>0?' + Contribution '+fmt(m.gbpoa_contribution):'')+'</div></div><div style="font-size:2rem;font-weight:800;font-family:\'Playfair Display\',serif;">'+fmt(total)+'</div></div></div>';
+
+  // Delete
+  html += '<div class="card" style="border-color:rgba(231,76,60,0.2);"><button class="btn-ghost" style="color:var(--red);" onclick="if(confirm(\'Delete '+m.first_name+' '+m.last_name+'? This cannot be undone.\')){deleteMember('+m.id+')}">🗑 Delete this member</button></div>';
+
+  document.getElementById('detailContent').innerHTML = html;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panelDetail').classList.add('active');
+}
+
+function dField(label, value) {
+  return '<div class="detail-field" style="margin-bottom:8px;"><div class="d-label">'+label+'</div><div class="d-value">'+(value||'—')+'</div></div>';
+}
+
+function statusPill(m) {
+  const both = m.gbpoa_paid && m.kb_paid;
+  const neither = !m.gbpoa_paid && !m.kb_paid;
+  const color = both ? 'var(--green)' : neither ? 'var(--red)' : '#f39c12';
+  const label = both ? 'Paid' : neither ? 'Unpaid' : 'Partial';
+  return '<span class="status-pill" style="color:'+color+';background:'+color+'22;">'+label+'</span>';
+}
+
+async function deleteMember(id) {
+  await sb.from('beach_children').delete().eq('member_id', id);
+  await sb.from('beach_members').delete().eq('id', id);
+  await loadData();
+  document.getElementById('panelDetail').classList.remove('active');
+  document.getElementById('panelMembers').classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-tab="members"]').classList.add('active');
+}
+</script>
+</body>
+</html>
