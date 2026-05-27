@@ -859,6 +859,60 @@ footer p {
   50% { transform: translateY(-15px) rotate(5deg); }
 }
 
+/* ═══════════════════════ EVENTS CALENDAR ═══════════════════════ */
+.cal-month {
+  margin-bottom: 2rem;
+}
+.cal-month-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--sand);
+  padding: 0.8rem 1.2rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px 12px 0 0;
+  border-bottom: 2px solid rgba(255,255,255,0.08);
+}
+.cal-event {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: background 0.2s;
+}
+.cal-event:last-child { border-bottom: none; }
+.cal-event:hover { background: rgba(255,255,255,0.03); }
+.cal-date {
+  flex: 0 0 150px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+}
+.cal-info { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.cal-info h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--white);
+  margin: 0;
+}
+.cal-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.tag-special { background: rgba(230,126,34,0.2); color: #f39c12; }
+.tag-theme { background: rgba(155,89,182,0.2); color: #bb8fce; }
+.tag-movie { background: rgba(41,128,185,0.2); color: #5dade2; }
+.tag-kids { background: rgba(39,174,96,0.2); color: #58d68d; }
+.tag-sports { background: rgba(231,76,60,0.2); color: #ec7063; }
+.tag-family { background: rgba(243,156,18,0.2); color: #f9e79f; }
+.tag-music { background: rgba(142,68,173,0.2); color: #c39bd3; }
+
 /* ═══════════════════════ REGISTRATION FORMS ═══════════════════════ */
 .reg-form-card {
   max-width: 640px;
@@ -989,6 +1043,8 @@ footer p {
   .form-grid-2 { grid-template-columns: 1fr; }
   .reg-form-card { padding: 1.5rem 1rem; }
   .reg-steps { flex-wrap: wrap; gap: 0.75rem !important; }
+  .cal-event { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+  .cal-date { flex: none; font-size: 0.8rem; }
 }
 
 /* ═══════════════════════ SCROLL ANIMATIONS ═══════════════════════ */
@@ -1128,35 +1184,58 @@ footer p {
   </div>
 </section>
 <section class="schedule" id="schedule">
-  <div class="schedule-inner">
+  <div class="schedule-inner" style="max-width:960px;">
     <div class="schedule-header reveal">
-      <p class="section-label">A Day at Kiddie Beach</p>
-      <h2>Typical Summer Day</h2>
-      <p>Here's what a full day at the beach looks like for our kids</p>
+      <p class="section-label">2026 Season</p>
+      <h2>Summer Events Calendar</h2>
+      <p>Something happening all summer long — mark your calendars!</p>
     </div>
-    
-    <div class="schedule-timeline">
-      <div class="schedule-item reveal">
-        <div class="schedule-time">Morning</div>
-        <h3>Open Swim & Free Play</h3>
-        <p>Kids arrive, set up on the sand, and hit the water. Supervised swimming, sandcastle building, and morning games get the day started right.</p>
-      </div>
-      <div class="schedule-item reveal">
-        <div class="schedule-time">Late Morning</div>
-        <h3>Organized Sports & Activities</h3>
-        <p>Basketball games, organized sports, and group activities get the energy up. Something for every age and interest level.</p>
-      </div>
-      <div class="schedule-item reveal">
-        <div class="schedule-time">Afternoon</div>
-        <h3>Snack Bar & Hangout</h3>
-        <p>Refuel at the snack stand, hang with friends, or just soak up the sun. The beach is the neighborhood living room in the summer.</p>
-      </div>
-      <div class="schedule-item reveal">
-        <div class="schedule-time">Evening</div>
-        <h3>Community Events & Entertainment</h3>
-        <p>As the sun goes down, the fun shifts to karaoke nights, open mic sessions, fundraisers, and family cookouts under the Brooklyn sky.</p>
-      </div>
+
+    <!-- JUNE -->
+    <div class="cal-month reveal">
+      <div class="cal-month-label">🌊 June</div>
+      <div class="cal-event"><div class="cal-date">Sat, June 27</div><div class="cal-info"><span class="cal-tag tag-special">🏖️ Opening Day</span><h3>Beach Opens for Season</h3></div></div>
     </div>
+
+    <!-- JULY -->
+    <div class="cal-month reveal">
+      <div class="cal-month-label">☀️ July</div>
+      <div class="cal-event"><div class="cal-date">Sat, July 4</div><div class="cal-info"><span class="cal-tag tag-special">🎆 Holiday</span><h3>Happy 4th of July / Fireworks</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, July 5</div><div class="cal-info"><span class="cal-tag tag-theme">🇺🇸 Themed Sunday</span><h3>July 4th / Americana</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Tue, July 7</div><div class="cal-info"><span class="cal-tag tag-movie">🎬 Movie Night</span><h3>Movie Night</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Wed, July 8</div><div class="cal-info"><span class="cal-tag tag-kids">🎨 Kids</span><h3>Craft Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Fri, July 10</div><div class="cal-info"><span class="cal-tag tag-sports">🏀 Sports</span><h3>Friday Night Lights BB</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Fri–Sun, July 17–19</div><div class="cal-info"><span class="cal-tag tag-sports">🏀 Tournament</span><h3>Sean Ryan Memorial BB Tournament Weekend</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, July 19</div><div class="cal-info"><span class="cal-tag tag-theme">☘️ Themed Sunday</span><h3>Irish Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Wed, July 22</div><div class="cal-info"><span class="cal-tag tag-kids">🎨 Kids</span><h3>Craft Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Thu, July 23</div><div class="cal-info"><span class="cal-tag tag-kids">💃 Kids Dance</span><h3>Kids Dance — Winter Birthdays</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sat, July 25</div><div class="cal-info"><span class="cal-tag tag-family">🎰 Family</span><h3>Daytime Family Bingo</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, July 26</div><div class="cal-info"><span class="cal-tag tag-theme">🎄 Themed Sunday</span><h3>Christmas in July</h3></div></div>
+    </div>
+
+    <!-- AUGUST -->
+    <div class="cal-month reveal">
+      <div class="cal-month-label">🌅 August</div>
+      <div class="cal-event"><div class="cal-date">Sat, Aug 1</div><div class="cal-info"><span class="cal-tag tag-music">🎶 Music</span><h3>Summer Jam / Music Bingo</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Tue, Aug 4</div><div class="cal-info"><span class="cal-tag tag-movie">🎬 Movie Night</span><h3>Movie Night</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Thu, Aug 6</div><div class="cal-info"><span class="cal-tag tag-kids">💃 Kids Dance</span><h3>Kids Dance — Halloween Theme</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sat, Aug 8</div><div class="cal-info"><span class="cal-tag tag-sports">🎲 Tournament</span><h3>Left, Right, Center Tournament</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, Aug 9</div><div class="cal-info"><span class="cal-tag tag-theme">🎃 Themed Sunday</span><h3>Halloween Theme</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Wed, Aug 12</div><div class="cal-info"><span class="cal-tag tag-kids">🎨 Kids</span><h3>Craft Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Fri, Aug 14</div><div class="cal-info"><span class="cal-tag tag-music">🎤 Entertainment</span><h3>Karaoke Night</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sat, Aug 15</div><div class="cal-info"><span class="cal-tag tag-sports">⚾ Tournament</span><h3>Adult Wiffle Ball Tournament</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sat, Aug 22</div><div class="cal-info"><span class="cal-tag tag-music">🎸 Live Music</span><h3>Lil Sister &amp; The Rolling Machine</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, Aug 23</div><div class="cal-info"><span class="cal-tag tag-theme">🤠 Themed Sunday</span><h3>Country / Redneck Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Wed, Aug 26</div><div class="cal-info"><span class="cal-tag tag-kids">🎨 Kids</span><h3>Craft Day</h3></div></div>
+      <div class="cal-event"><div class="cal-date">Sun, Aug 30</div><div class="cal-info"><span class="cal-tag tag-special">🎁 Special Event</span><h3>Chinese Auction</h3></div></div>
+    </div>
+
+    <!-- SEPTEMBER -->
+    <div class="cal-month reveal">
+      <div class="cal-month-label">🍂 September</div>
+      <div class="cal-event"><div class="cal-date">Fri–Sun, Sept 5–7</div><div class="cal-info"><span class="cal-tag tag-special">🏖️ Closing Weekend</span><h3>Labor Day Weekend Games</h3></div></div>
+    </div>
+
   </div>
 </section>
 
